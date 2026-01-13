@@ -38,7 +38,9 @@ jobs:
       - name: Run Newman and generate report
         run: |
           mkdir -p reports
-          newman run ./on_Arrival.postman_collection.json -r htmlextra --reporter-htmlextra-export reports/report.html || true
+          newman run ./on_Arrival.postman_collection.json \
+            -r htmlextra \
+            --reporter-htmlextra-export reports/report.html || true
 
       - name: Verify report file
         run: |
@@ -49,3 +51,23 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: newman-report
+          path: reports/report.html
+
+      - name: Send email with report
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "API Automation Report - Newman"
+          body: |
+            Hi Team,
+
+            Please find attached the latest Newman API automation report.
+
+            Regards,
+            QA Team
+          to: sachin.pujari@credilio.in
+          from: QA Team <${{ secrets.EMAIL_USERNAME }}>
+          attachments: reports/report.html
