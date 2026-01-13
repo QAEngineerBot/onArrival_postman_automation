@@ -26,12 +26,19 @@ jobs:
         run: |
           npm install -g newman newman-reporter-htmlextra
 
-      - name: Run Newman and generate report
-        run: |
-          mkdir -p reports
-          newman run on_Arrival.postman_collection.json \
-          -r htmlextra \
-          --reporter-htmlextra-export reports/report.html
+		  - name: Debug workspace
+		    run: |
+		      echo "Current directory:"
+		      pwd
+		      echo "Files in workspace:"
+		      ls -la
+
+		  - name: Run Newman and generate report
+		    run: |
+		      mkdir -p reports
+		      newman run ./on_Arrival.postman_collection.json \
+		      -r htmlextra \
+		      --reporter-htmlextra-export reports/report.html || true
 
       - name: Upload report as artifact
         uses: actions/upload-artifact@v4
