@@ -3,7 +3,11 @@ name: Run API Automation with Newman
 on:
   push:
     branches: [ main ]
+
   workflow_dispatch:
+
+  schedule:
+    - cron: "30 4 * * *"   # 10:00 AM IST (04:30 UTC)
 
 jobs:
   run-api-tests:
@@ -13,7 +17,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
@@ -50,7 +54,6 @@ jobs:
 
             Regards,
             QA Team
-          to: sachin.pujari@credilio.in
+          to: sachin.pujari@credilio.in, saswat.chaturvedi@credilio.in
           from: QA Automation
           attachments: reports/report.html
-
