@@ -30,15 +30,16 @@ jobs:
 		    run: |
 		      echo "Current directory:"
 		      pwd
-		      echo "Files in workspace:"
+		      echo "Files in repo:"
 		      ls -la
+		      echo "Newman version:"
+		      newman -v
 
 		  - name: Run Newman and generate report
 		    run: |
 		      mkdir -p reports
-		      newman run ./on_Arrival.postman_collection.json \
-		      -r htmlextra \
-		      --reporter-htmlextra-export reports/report.html || true
+		      newman run ./on_Arrival.postman_collection.json -r htmlextra --reporter-htmlextra-export reports/report.html
+
 
       - name: Upload report as artifact
         uses: actions/upload-artifact@v4
